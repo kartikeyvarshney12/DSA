@@ -1,18 +1,5 @@
 class Solution {
     public boolean canBeEqual(String s1, String s2) {
-        int l = 0;
-        for(int r = 0; r < s1.length(); r++) {
-            while(r < s1.length()) {
-                if((r - l) != 2) {
-                    r++;
-                }
-                else {
-                    swap(s1,l,r);
-                    l++;
-                    break;
-                }
-            }
-        }
         int[] even = new int[26];
         int[] odd = new int[26];
 
@@ -33,14 +20,5 @@ class Solution {
         }
 
         return true;
-    }
-    public String swap(String str, int i, int j) {
-        char[] arr = str.toCharArray();
-
-        char temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-        
-        return new String(arr);
     }
 }
