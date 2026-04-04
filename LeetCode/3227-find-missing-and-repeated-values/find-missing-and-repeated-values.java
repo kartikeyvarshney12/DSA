@@ -1,32 +1,30 @@
 class Solution {
     public int[] findMissingAndRepeatedValues(int[][] grid) {
         int n = grid.length;
+        int N = n * n;
 
-        int[] result = new int[n * n];
-        int index = 0;
+        long expectedSum = (long) N * (N + 1) / 2;
+        long expectedSquareSum = (long) N * (N + 1) * (2 * N + 1) / 6;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                result[index++] = grid[i][j];
+        long actualSum = 0;
+        long actualSquareSum = 0;
+
+        // 🔹 Traverse matrix
+        for (int[] row : grid) {
+            for (int num : row) {
+                actualSum += num;
+                actualSquareSum += (long) num * num;
             }
         }
 
-        Arrays.sort(result);
+        long diff = expectedSum - actualSum; // x - y
+        long squareDiff = expectedSquareSum - actualSquareSum; // x^2 - y^2
 
-        int repeated = -1;
-        int missing = -1;
+        long sumXY = squareDiff / diff; // x + y
 
-        for(int i = 1; i < result.length; i++) {
-            if(result[i] == result[i-1]) {
-                repeated = result[i];
-            } else if(result[i] > result[i-1] + 1) {
-                missing = result[i-1] + 1;
-            }
-        }
-        //edge cases
-        if(result[0] != 1) missing = 1;
-        if(result[result.length - 1] != n*n) missing = n*n;
+        long missing = (diff + sumXY) / 2;
+        long repeated = missing - diff;
 
-        return new int[]{repeated, missing};
+        return new int[]{(int) repeated, (int) missing};
     }
 }
